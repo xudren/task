@@ -1,0 +1,23 @@
+<div class="text-center">
+  <form class="form-signin">
+
+    <h1 class="h3 mb-2 font-weight-normal">Please sign in</h1>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type="text" id="username" class="form-control" placeholder="Username" name="username"#nameinput = "ngModel" [(ngModel)]="user.username"pattern="[0-9A-z]+" required>
+    <div class="form-group" *ngIf="nameinput.touched&&nameinput.invalid"><!--z-声明了#nameinput变量 可以调用ngmodel方法-->
+      <span class="error-info" *ngIf="nameinput.errors?.pattern">用户名不能为空</span>
+
+    </div>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="user.password" #pwdinput = "ngModel"required>
+    <div class="form-group" *ngIf="pwdinput.touched&&pwdinput.invalid">
+      <span class="error-info" *ngIf="pwdinput.errors?.required">密码不能为空！</span>
+
+    </div>
+    <div class="checkbox mb-3">
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="login(user)">Sign in</button>
+  </form>
+
+</div>
+

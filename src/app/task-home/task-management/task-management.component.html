@@ -1,0 +1,279 @@
+<form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+  <button class="btn btn-primary operation" data-toggle="modal" data-target="#myModal">新建</button>
+
+  <!-- 模态框（Modal） -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">新建Task</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+            <div class="form-group">
+              <label for="taskName" class="col-sm-2 control-label">名字</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" placeholder="请输入名字" [(ngModel)]="task.taskName" name="taskName"
+                  #taskName="ngModel"pattern="[0-9A-Za-z_]+$"required>
+                  <div class="form-group" *ngIf="taskName.touched &&taskName.invalid">
+                      <span class="error-info" *ngIf="taskName.errors?.required">用户名不能为空</span>
+                
+                    </div>
+
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="name">选择列表</label>
+              <div class="col-sm-9">
+                <select class="form-control" style="margin-top: 8px;" [(ngModel)]="task.taskStaff" name="taskStaff"
+                  #taskStaff="ngModel">
+                  <option>操作员1</option>
+                  <option>操作员2</option>
+                  <option>操作员3</option>
+                  <option>操作员4</option>
+                  <option>操作员5</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="name">描述</label>
+              <form role="form" class="col-sm-9">
+                <div class="form-group ">
+                  <textarea class="form-control" rows="3" style="margin-top: 8px;" [(ngModel)]="task.taskDescription"
+                    name="taskDescription" #taskDescription="ngModel"></textarea>
+                </div>
+              </form>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="addTaskDialogCloseButton" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="submit" class="btn btn-primary" (click)="add(task)" >提交更改</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  </div>
+</form>
+<div>
+  <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+    <button class="btn btn-primary operation" data-toggle="modal" data-target="#myModal3" [disabled]="list.length===0">批量操作</button>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">批量编辑Task</h4>
+          </div>
+          <div class="modal-body " style="height: 400px">
+            
+            <form role="form">
+              <div class="form-group">
+                <div>
+                  <label for="firstname" class="col-sm-2 control-label">Task名称</label>
+                  <div class="form-group col-sm-9">
+                    <span *ngFor="let dd of list">
+                      <label type="text" [(ngModel)]="dd.taskName" name="taskName" #taskName="ngModel"
+                        ngDefaultControl>{{dd.taskName}}</label>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="firstname" class="col-sm-2 control-label">Task状态</label>
+                <div class="form-group col-sm-9">
+                  <label type="text" [(ngModel)]="task.taskState" name="taskState" #taskState="ngModel"
+                    ngDefaultControl>{{list[0] ? list[0].taskState:''}}</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="name">创建者</label>
+                <div class="col-sm-9">
+                  <span *ngFor="let dd of list">
+                    <label type="text" style="margin-top: 8px;" name="taskStaff">{{dd.taskStaff}}</label>
+                  </span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="name">描述</label>
+                <form role="form" class="col-sm-9">
+                  <div class="form-group ">
+                    <textarea class="form-control" rows="3" style="margin-top: 8px" [(ngModel)]="lists.taskDescription"
+                      name="taskDescription" #taskDescription="ngModel"></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="name">状态</label>
+                <form role="form" class="col-sm-9">
+                  <div class="form-group ">
+                    <input type="radio" [(ngModel)]="lists.taskState"
+                      [ngModelOptions]="{standalone: true}"value="1">有问题&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" [(ngModel)]="lists.taskState" name="taskState">开始工作
+                  </div>
+                </form>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="name">问题描述</label>
+                <form role="form" class="col-sm-9">
+                  <div class="form-group ">
+                    <textarea class="form-control" rows="3" style="margin-top: 8px" [(ngModel)]="lists.question"
+                      name="question" #question="ngModel" ngDefaultControl></textarea>
+                  </div>
+                </form>
+              </div>
+            </form>
+
+          
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-primary" (click)="updateTasks(lists)">提交更改</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+  </form>
+</div>
+
+<table class="table table-hover ">
+  <thead>
+    <tr>
+      <th scope="col">
+        <div class="checkbox" style="margin-bottom:-5px">
+          <label>
+            <input type="checkbox" >
+          </label>
+        </div>
+      </th>
+      <th scope="col">Task名称<button class="btn btn-default but" (click)="taskorder()"><i
+            class="iconfont">&#xe600;</i></button></th>
+      <th scope="col">Task描述</th>
+      <th scope="col">问题描述</th>
+      <th scope="col">状态</th>
+      <th scope="col">创建者</th>
+      <th scope="col">更新时间<button class="btn btn-default but" (click)="timeorder()"><i
+            class="iconfont">&#xe68a;</i></button></th>
+
+      <th scope="col">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of tasks">
+      <td>
+        <div class="checkbox" >
+          <label>
+            <input type="checkbox" (change)="choose(task)"[(ngModel)]="task.select">
+          </label>
+        </div>
+      </td>
+      <td style="vertical-align: middle;">{{task?.taskName}}</td>
+      <td style="vertical-align: middle;">{{task?.taskDescription}}</td>
+      <td style="vertical-align: middle;">{{task?.question}}</td>
+      <td style="vertical-align: middle;">{{task?.taskState}}</td>
+      <td style="vertical-align: middle;">{{task?.taskStaff}}</td>
+      <td style="vertical-align: middle;">{{task?.time}}</td>
+
+      <td style="vertical-align: middle;">
+        <button class="btn btn-default but" data-toggle="modal" (click)="getTask(task.id)" data-target="#myModal2"><i
+            class="iconfont">&#xe601;</i></button></td>
+    </tr>
+  </tbody>
+ 
+</table>
+
+
+
+<form (ngSubmit)="onSubmit()" #taskForm="ngForm" *ngIf="taskForEdit">
+  <!-- 模态框（Modal） -->
+  <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">编辑Task</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+            <div class="form-group">
+              <label for="firstname" class="col-sm-2 control-label">名字</label>
+              <div class="form-group col-sm-9">
+                <label type="text" [(ngModel)]="taskForEdit.taskName" name="taskName" #taskName="ngModel"
+                  ngDefaultControl>{{taskForEdit.taskName}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="firstname" class="col-sm-2 control-label">状态</label>
+              <div class="form-group col-sm-9">
+                <label type="text" [(ngModel)]="taskForEdit.taskState" name="taskState" #taskState="ngModel"
+                  ngDefaultControl>{{taskForEdit.taskState}}</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="name">分配至</label>
+              <div class="col-sm-9">
+                <select class="form-control" style="margin-top: 8px;" [(ngModel)]="taskForEdit.taskStaff"
+                  name="taskStaff" #taskStaff="ngModel">
+                  <option>操作员1</option>
+                  <option>操作员2</option>
+                  <option>操作员3</option>
+                  <option>操作员4</option>
+                  <option>操作员5</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="name">描述</label>
+              <form role="form" class="col-sm-9">
+                <div class="form-group ">
+                  <textarea class="form-control" rows="3" style="margin-top: 8px"
+                    [(ngModel)]="taskForEdit.taskDescription" name="taskDescription"
+                    #taskDescription="ngModel"></textarea>
+                </div>
+              </form>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"
+            id="updateTaskDialogCloseButton">关闭</button>
+          <button type="submit" class="btn btn-primary" (click)="updateTask(taskForEdit)">提交更改</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
